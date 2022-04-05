@@ -1,0 +1,11 @@
+//la cinta transportadora para cuando entra en alguna fase,A o B, y solo continua cuando termina
+//algun objeto en curso
+CINTA = (transportarA->faseA->terminar->CINTA
+		|transportarB->faseB->terminar->CINTA).
+BRAZO = (faseA->prensa->listobrazo->BRAZO
+		|faseB->taladro->listobrazo->BRAZO).
+TALADRO = (nuevoB->taladrar->fintaladro->TALADRO).
+PRENSA = (nuevoA->prensar->finprensa->PRENSA).
+
+||CINTA_TALADRO = (CINTA||BRAZO || PRENSA)
+/{faseA/nuevoA, faseB/nuevoB,finprensa/prensa, fintaladro/taladro,terminar/listobrazo}.
