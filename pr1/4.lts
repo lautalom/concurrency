@@ -1,7 +1,6 @@
-
 const N = 2
 range T = 0..N
+VARIABLE = (write[i:T] -> VARIABLE[i]),
+VARIABLE[i:T] = (write[j:T] -> VARIABLE[j]
+				| read[i] -> VARIABLE[i]).
 
-VARIABLE = VARIABLE[0],
-VARIABLE[u:T] = (read[u] -> VARIABLE[u]
-				|write[v:T] -> VARIABLE[v]).
