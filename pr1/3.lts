@@ -1,0 +1,48 @@
+//3a)
+
+MEETING = (hello ->converse ->godbye->STOP).
+
+//3b)
+
+JOB = (arrive -> work -> leave -> JOB).
+
+//3c)
+
+GAME = ({one, two} -> A
+		| tree-> lose -> GAME),
+
+A = (win -> GAME).
+
+//3d)
+
+MOVIE= (ahead -> MA),
+
+MA= (right -> MOVIE
+	| left-> STOP).
+
+//3e
+FOURTICK(N=3) = FOURTICK[0],
+FOURTICK[i:0..N] = (when (i<N) tick->FOURTICK[i+1]
+				| when (i==N) tick->STOP
+				).
+
+FOURTICK2(N=3) = (start -> FOURTICK2[0]),
+FOURTICK2[i:0..N] = (when (i<N) tick->FOURTICK2[i+1]
+				| when (i==N) tock->STOP
+				| stop -> STOP
+				).
+//3f
+
+DOUBLE = (in[i:1..3] -> out[i] -> DOUBLE).
+
+//3g
+
+P1 = (weekend -> P2
+	| weekend -> INWEEK),
+
+P2 = (sleep -> SLEEP2),
+SLEEP2 = ({play,shop}->P1),
+INWEEK = (sleep -> SLEEP1),
+SLEEP1 = (work -> P1).
+
+

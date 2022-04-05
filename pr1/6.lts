@@ -1,0 +1,9 @@
+//6 sensor
+WATERSENSOR(N=9) = WATERSENSOR[5],
+WATERSENSOR[i:0..N] = ( when i==1 bajo[i]->WATERSENSOR[i+1]
+			| when i==1 bajo[i]->WATERSENSOR[i-1]
+		 	| when i==0 bajo[i]->WATERSENSOR[i+1]
+			| when i==9 alto[i]-> WATERSENSOR[i-1]
+			| when (i>1 && i<9) normal[i]->WATERSENSOR[i+1] 
+			| when (i>1 && i<9) normal[i]->WATERSENSOR[i-1]
+			).

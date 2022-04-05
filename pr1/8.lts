@@ -1,0 +1,11 @@
+const MAXFREQ = 5
+const MINFREQ = 1
+range FREQS = MINFREQ..MAXFREQ
+
+RADIO(N=MAXFREQ) = (on->RADIO[N]),
+RADIO[v:FREQS] = (found->RADIO[v]
+				|off -> RADIO
+				|when (v>MINFREQ) scan -> RADIO[v-1]
+				).
+
+	

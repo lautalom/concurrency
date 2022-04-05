@@ -1,0 +1,15 @@
+range T=0..3
+const PRICE = 15
+EXPEN= (in[5]->EXPEN[5][3]
+		|in[10]->EXPEN[10][3]
+		|in[20]->EXPEN[20][3]),
+EXPEN[v: 0..40] [t: T]= (when (v==5 && t>0) entran5->EXPEN [10][t-1]
+						|when (v==5 && t>0) entran10->EXPEN[15][t-1]
+						|when (v==5 && t>0) entran20->EXPEN[25][t-1]
+						|when (t==0) devolver[v]->EXPEN
+						|when (v==10 && t>0) entran5->EXPEN[15][t-1]
+						|when (v==10 && t>0)entran10->EXPEN[20][t-1]
+						|when (v==10 && t>0) entran20->EXPEN[30] [t-1]
+						|when (v>=PRICE) darCocucha->darVuelto[v-PRICE]->EXPEN
+						|when (t>0 && v<PRICE) esperanding->EXPEN[v][t-1]
+						).

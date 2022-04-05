@@ -1,0 +1,2 @@
+//5 trigger
+A = (trigger -> (zero->A | one -> A)).
