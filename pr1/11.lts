@@ -1,0 +1,8 @@
+BRAZO = (fase1->prensa->listobrazo->BRAZO).
+PRENSA = (desocupado->prensar->finprensa->PRENSA).
+
+CINTA = (transportar->recibircinta->siguiente->CINTA).
+PRENSA = (preprensado->prensado->listoprensa->PRENSA).
+
+||CLIENT_SERVER = (CINTA || BRAZO || PRENSA)
+/{fase1/desocupado, recibircinta/listobrazo}.
