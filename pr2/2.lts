@@ -1,0 +1,38 @@
+const MAX = 2 // maximum concurrent process access
+const Nread = 4 // Maximum readers..there are 1 reader and 3 writers(who can read too)
+const Nwrite = 3 // Maximum writers
+const False = 0 
+const True = 1
+range Bool = False..True
+//Alphabet expansion to exclude counterpart: A did an action, B cannot do anything
+// where A, B is Reader, Writer or Writer, Reader
+set Actions = {acquireRead,releaseRead,acquireWrite,releaseWrite}
+//reader only examines variable. Any number of readers are allowed concurrently. Hide examine.
+READER = (acquireRead->examine->releaseRead->READER)+Actions\{examine}.
+//writer both examine and update variable. A writer has exclusive access to variable. Hide modify.
+WRITER = (acquireWrite->modify->releaseWrite->WRITER)+ Actions\{modify}.
+
+RW_LOCK = RW[0][False],
+RW[readers:0..MAX][writing:Bool] =
+	( when (!writing) acquireRead -> RW[readers+1][writing]
+	| releaseRead -> RW[readers-1][writing]
+	| when(readers == 0 && !writing) acquireWrite->RW[readers][True]
+	| releaseWrite -> RW[readers][False]
+	).
+// property son automatas deterministas para propiedades de safety. 
+// Nota: def recursiva, asegurando que no hay deadlock
+property SAFE_RW = ( acquireRead -> READING[1]
+					| acquireWrite -> WRITING
+					),
+READING[i:1..MAX] = ( acquireRead -> READING[i+1]
+			| when (i>1) releaseRead -> READING[i-1]
+			| when (i==1) releaseRead -> SAFE_RW
+			),
+WRITING = (releaseWrite -> SAFE_RW).
+//READWRITELOCK modifica al RW_LOCK asegurando que no hay release sin acquire nunca
+||READWRITELOCK = (RW_LOCK || SAFE_RW).
+//Puede evitarse la property si se controlan los casos de release ademas de los acquire
+
+||READERS_WRITERS = (reader[1..Nread] :READER || writer[1..Nwrite]:WRITER
+				||{reader[1..Nread], writer[1..Nwrite]}::READWRITELOCK).
+

@@ -1,9 +1,10 @@
-//6 sensor
-WATERSENSOR(N=9) = WATERSENSOR[5],
-WATERSENSOR[i:0..N] = ( when i==1 bajo[i]->WATERSENSOR[i+1]
-			| when i==1 bajo[i]->WATERSENSOR[i-1]
-		 	| when i==0 bajo[i]->WATERSENSOR[i+1]
-			| when i==9 alto[i]-> WATERSENSOR[i-1]
-			| when (i>1 && i<9) normal[i]->WATERSENSOR[i+1] 
-			| when (i>1 && i<9) normal[i]->WATERSENSOR[i-1]
-			).
+const MIN = 0
+const MAX = 9
+range Level = MIN..MAX
+SENSOR = SENSOR[5],
+SENSOR[w:Level] = (level[i:Level] -> SENSOR[i]
+					| when (w<2) low -> SENSOR[w]
+					| when (w>8) high -> SENSOR[w]
+					| when (w>=2 && w<=8) normal -> SENSOR[w]
+					).
+	
