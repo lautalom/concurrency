@@ -1,0 +1,35 @@
+const False = 0
+const True = 1
+range Bool = False..True
+//opcion 1, lock en los asientos, eliminar ||Terminals::LOCK
+//opcion 2, lock en las terminales, default
+LOCK = (acquire -> release -> LOCK).
+/* opcion 1
+SEAT = SEAT[False],
+SEAT[reserved:Bool] = ( when (!reserved) acquire-> reserve -> release-> SEAT[True]
+			 | acquire->query[reserved]->release -> SEAT[reserved]
+			 | when (reserved) reserve -> ERROR 
+			 ).
+||SEATS = (seat[Seats]:SEAT || seat[Seats]:LOCK). 
+*/
+SEAT = SEAT[False],
+SEAT[reserved:Bool] = ( when (!reserved) reserve-> SEAT[True]
+			 | query[reserved]-> SEAT[reserved]
+			 | when (reserved) reserve -> ERROR 
+			 ).
+range Seats = 1..2
+||SEATS = (seat[Seats]:SEAT). 
+
+TERMINAL = (choose[s:Seats] -> acquire -> seat[s].query[reserved:Bool]
+			-> if (!reserved) then (seat[s].reserve -> release -> TERMINAL)
+ 			else (release -> TERMINAL)
+			).
+
+/* opcion 1
+TERMINAL = (choose[s:Seats] -> seat[s].query[reserved:Bool]
+			-> if (!reserved) then (seat[s].reserve -> TERMINAL)
+ 			else TERMINAL).
+*/
+//{a,b} tiene mas de 150 estados. Con una sola terminal, el lock no sirve.
+set Terminals = {a}
+||CONCERT = ( Terminals:TERMINAL || Terminals::SEATS || Terminals::LOCK ).
